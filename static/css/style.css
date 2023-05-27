@@ -191,7 +191,7 @@ nav ul ul {
 
 /* Display Dropdowns on Hover */
 
-nav ul li:hover > ul {
+nav ul li:hover>ul {
     display: inherit;
 }
 
@@ -226,7 +226,7 @@ nav ul ul ul li {
 
 /* Change ' +' in order to change the Dropdown symbol */
 
-li > a:only-child:after {
+li>a:only-child:after {
     content: '';
 }
 
@@ -250,7 +250,7 @@ li > a:only-child:after {
 
     /* Hide the navigation menu by default */
     /* Also hide the  */
-    .toggle + a,
+    .toggle+a,
     .menu {
         display: none;
     }
@@ -286,7 +286,7 @@ li > a:only-child:after {
     }
 
     /* Display Dropdown when clicked on Parent Lable */
-    [id^=drop]:checked + ul {
+    [id^=drop]:checked+ul {
         display: block;
         background: rgba(16, 16, 16, 0.85);
         padding: 15px 0;
@@ -342,8 +342,8 @@ li > a:only-child:after {
     }
 
     /* Hide menus on hover */
-    nav ul ul li:hover > ul,
-    nav ul li:hover > ul {
+    nav ul ul li:hover>ul,
+    nav ul li:hover>ul {
         display: none;
     }
 
@@ -402,6 +402,12 @@ li > a:only-child:after {
     background-size: cover;
     position: relative;
     min-height: 20em;
+}
+
+.bg1 {
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0px;
+    background-image: url('../single-post-pic.jpg');
 }
 
 /*-- place holder --*/
