@@ -940,6 +940,11 @@ p.italic-blue {
     font-weight: 500;
 }
 
+.img-movie-shots {
+    max-width: 200px;
+    height: auto;
+}
+
 /*--//shop--*/
 /*-- customer --*/
 
