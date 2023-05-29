@@ -16,6 +16,9 @@ prod_settings.py
 local_settings.py
 
 __pycache__/
+*.pyc
+
+__pycache__/
 */__pycache__/
 *.py[cod]
 .pyc
