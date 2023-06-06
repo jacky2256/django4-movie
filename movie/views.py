@@ -1,12 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
+
 
 from django.views.generic import View, ListView, DetailView
-from .models import Movie, Actor
+from .models import Movie, Actor, Genre
 
 from .forms import ReviewForm
 
 
-class MoviesListView(ListView):
+class GenreYear:
+    """Жанры и года выхода фильмов"""
+    def get_genres(self):
+        return Genre.objects.all()
+    
+    def get_year(self):
+        return Movie.objects.filter(draft=False).values("year")
+    
+
+class MoviesListView(GenreYear, ListView):
     
     model = Movie
     queryset = Movie.objects.filter(draft=False)
@@ -17,7 +28,7 @@ class MoviesListView(ListView):
 
 
 
-class MoviesDetailView(DetailView):
+class MoviesDetailView(GenreYear, DetailView):
     
     model = Movie
     slug_field = 'url'
@@ -43,8 +54,18 @@ class AddReview(View):
         return redirect(movie.get_absolute_url())
 
 
-class ActorView(DetailView):
+class ActorView(GenreYear, DetailView):
     """Вывод информации о актерах"""
     model = Actor
     template_name = 'movie/actor.html'
     slug_field = "name"
+
+
+class FilterMoviesView(GenreYear, ListView):
+    """Фильтр фильмов"""
+    def get_queryset(self):
+        queryset = Movie.objects.filter(
+            Q(year__in=self.request.GET.getlist("year")) | 
+            Q(genres__in=self.request.GET.getlist("genre"))
+        )
+        return queryset
