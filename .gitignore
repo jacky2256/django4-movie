@@ -11,6 +11,9 @@ db.sqlite3
 
 venv
 
+django_movie/__pycache__/settings.cpython-310.pyc
+django_movie/__pycache__/urls.cpython-310.pyc
+
 
 prod_settings.py
 local_settings.py
