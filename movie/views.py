@@ -22,7 +22,7 @@ class MoviesListView(GenreYear, ListView):
     
     model = Movie
     queryset = Movie.objects.filter(draft=False)
-    paginate_by = 1
+    paginate_by = 3
     # def get(self, request):
     #     movie_list = Movie.objects.all()
     #     context = {'movie_list' : movie_list}
@@ -44,6 +44,7 @@ class MoviesDetailView(GenreYear, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["star_form"] = RatingForm()
+        context["form"] = ReviewForm()
         return context
         
 
@@ -71,8 +72,8 @@ class ActorView(GenreYear, DetailView):
 
 class FilterMoviesView(GenreYear, ListView):
     """Фильтр фильмов"""
-    
-    paginate_by = 2
+
+    paginate_by = 3
 
     def get_queryset(self):
         queryset = Movie.objects.filter(
@@ -109,3 +110,15 @@ class AddStarRating(View):
             return redirect(movie.get_absolute_url())
         else:
             return HttpResponse(status=400)
+    
+class Search(ListView):
+    """Поиск фильмов"""
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Movie.objects.filter(title__icontains=self.request.GET.get("search"))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["search"] = f'search={self.request.GET.get("search")}&'
+        return context
