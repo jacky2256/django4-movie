@@ -18,7 +18,7 @@ django_movie/__pycache__/urls.cpython-310.pyc
 prod_settings.py
 local_settings.py
 
-__pycache__/
+*/__pycache__/
 *.pyc
 
 __pycache__/

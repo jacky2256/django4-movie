@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     'movie.apps.MovieConfig',
+    'contact.apps.ContactConfig',
 ]
 
 MIDDLEWARE = [
