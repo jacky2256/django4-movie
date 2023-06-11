@@ -27,6 +27,7 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+    path('accounts/', include('allauth.urls')),
     path('contact/', include("contact.urls")),
     path('', include('movie.urls')),
 )
