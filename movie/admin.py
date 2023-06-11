@@ -1,15 +1,16 @@
 from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from modeltranslation.admin import TranslationAdmin
 
 from .models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews
 
 
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
-
-
 class MovieAdminForm(forms.ModelForm):
-    description = forms.CharField(label='Описание',widget=CKEditorUploadingWidget())
+    """Форма с виджетом ckeditor"""
+    description_ru = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+    description_en = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
 
     class Meta:
         model = Movie
@@ -17,9 +18,9 @@ class MovieAdminForm(forms.ModelForm):
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslationAdmin):
     """Категории"""
-    list_display = ("id", "name", "url")
+    list_display = ("name", "url")
     list_display_links = ("name",)
 
 
@@ -42,7 +43,7 @@ class MovieShotsInline(admin.TabularInline):
 
 
 @admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
+class MovieAdmin(TranslationAdmin):
     """Фильмы"""
     list_display = ("title", "category", "url", "draft")
     list_filter = ("category", "year")
@@ -51,8 +52,8 @@ class MovieAdmin(admin.ModelAdmin):
     save_on_top = True
     save_as = True
     list_editable = ("draft",)
-    form = MovieAdminForm
     actions = ["publish", "unpublish"]
+    form = MovieAdminForm
     readonly_fields = ("get_image",)
     fieldsets = (
         (None, {
@@ -79,10 +80,6 @@ class MovieAdmin(admin.ModelAdmin):
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.poster.url} width="100" height="110"')
 
-
-    get_image.short_description = "Постер"
-
-
     def unpublish(self, request, queryset):
         """Снять с публикации"""
         row_update = queryset.update(draft=True)
@@ -91,7 +88,6 @@ class MovieAdmin(admin.ModelAdmin):
         else:
             message_bit = f"{row_update} записей были обновлены"
         self.message_user(request, f"{message_bit}")
-
 
     def publish(self, request, queryset):
         """Опубликовать"""
@@ -102,28 +98,30 @@ class MovieAdmin(admin.ModelAdmin):
             message_bit = f"{row_update} записей были обновлены"
         self.message_user(request, f"{message_bit}")
 
-
     publish.short_description = "Опубликовать"
-    publish.allowed_permissions = ("change",)
+    publish.allowed_permissions = ('change', )
 
     unpublish.short_description = "Снять с публикации"
-    unpublish.allowed_permissions = ("change",)
+    unpublish.allowed_permissions = ('change',)
+
+    get_image.short_description = "Постер"
+
 
 @admin.register(Reviews)
 class ReviewAdmin(admin.ModelAdmin):
-    """Отзывы"""
+    """Отзывы к фильму"""
     list_display = ("name", "email", "parent", "movie", "id")
     readonly_fields = ("name", "email")
 
 
 @admin.register(Genre)
-class GenreAdmin(admin.ModelAdmin):
+class GenreAdmin(TranslationAdmin):
     """Жанры"""
     list_display = ("name", "url")
 
 
 @admin.register(Actor)
-class ActorAdmin(admin.ModelAdmin):
+class ActorAdmin(TranslationAdmin):
     """Актеры"""
     list_display = ("name", "age", "get_image")
     readonly_fields = ("get_image",)
@@ -137,11 +135,11 @@ class ActorAdmin(admin.ModelAdmin):
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
     """Рейтинг"""
-    list_display = ("star", "ip", "movie")
+    list_display = ("star", "movie", "ip")
 
 
 @admin.register(MovieShots)
-class MovieShotsAdmin(admin.ModelAdmin):
+class MovieShotsAdmin(TranslationAdmin):
     """Кадры из фильма"""
     list_display = ("title", "movie", "get_image")
     readonly_fields = ("get_image",)
@@ -156,4 +154,3 @@ admin.site.register(RatingStar)
 
 admin.site.site_title = "Django Movies"
 admin.site.site_header = "Django Movies"
-
