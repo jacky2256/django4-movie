@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'snowpenguin.django.recaptcha3',
     'ckeditor',
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
 
     'movie.apps.MovieConfig',
     'contact.apps.ContactConfig',
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -94,6 +97,11 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -120,6 +128,16 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+LOGIN_REDIRECT_URL = "/"
+
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+LOGIN_REDIRECT_URL = "/"
+
 
 gettext = lambda s: s
 LANGUAGES = (
@@ -220,3 +238,5 @@ RECAPTCHA_PUBLIC_KEY = "6LdpJIMmAAAAADpz8n8GnNpMz9wy2uMNJA19g_Ej"
 RECAPTCHA_PRIVATE_KEY = "6LdpJIMmAAAAAEx71erJn102x2a26A-ADQTtTqAL"
 RECAPTCHA_DEFAULT_ACTION = 'generic'
 RECAPTCHA_SCORE_THRESHOLD = 0.5
+
+SITE_ID = 1
