@@ -23,11 +23,15 @@ Django Movie - это веб-приложение для любителей ки
     + git clone https://github.com/jacky2256/django4-movie.git
 2. Перейдите в каталог проекта: 
     + cd django-movie
-3. Установите зависимости: 
+3. Установите виртуальное окружение:
+    - python3 -m venv venv
+4. Установите зависимости: 
     + pip install -r requirements.txt
-4. Настройте базу данных:
+5. Настройте базу данных:
     + python manage.py makemigrations
     + python manage.py migrate
+6. Создайте суперпользователя:
+    + python3 manage.py createsuperuser
 5. Запустите сервер разработки: 
     + python manage.py runserver
 6. Откройте веб-браузер и перейдите по адресу http://localhost:8000, чтобы получить доступ к приложению.
